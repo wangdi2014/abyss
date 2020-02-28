@@ -160,6 +160,21 @@ jobs:
       make -j12 distcheck
     displayName: Compiling ABySS with default gcc
 
+- job: macOS_default_gcc_32bits
+  pool:
+    vmImage: macOS-10.14
+  steps:
+  - script: |
+      brew update
+      brew install automake boost openmpi google-sparsehash make pandoc ghc
+    displayName: Install common
+  - script: |
+      ./autogen.sh
+      ./configure CC=gcc CXX=g++ --build=i686-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32" --with-boost=/usr/local/opt/boost/include --with-mpi=/usr/local/Cellar/open-mpi/4.0.1_2 CPPFLAGS=-I/usr/local/Cellar/google-sparsehash/2.0.3/include
+      make -j12
+      make check
+    displayName: Compiling ABySS with default gcc 32bits
+
 - job: linux_gcc9
   pool:
     vmImage: Ubuntu 16.04
