@@ -121,7 +121,7 @@ jobs:
       make -j12 distcheck
     displayName: Compiling ABySS with gcc-8
 
-- job: linux_gcc4.8
+- job: linux_gcc4_8
   pool:
     vmImage: Ubuntu 16.04
   steps:
@@ -133,13 +133,13 @@ jobs:
       sudo apt-get install -qq autoconf automake gcc g++ libboost-dev libgtest-dev libopenmpi-dev libsparsehash-dev make pandoc
     displayName: Install common
   - script: sudo apt-get install -qq gcc-4.8 g++-4.8
-    displayName: Install gcc-4.8
+    displayName: Install gcc-4_8
   - script: |
       ./autogen.sh
       export DISTCHECK_CONFIGURE_FLAGS="CC=gcc-8 CXX=g++-8"
       ./configure CC=gcc-4.8 CXX=g++-4.8 --with-mpi=/usr/lib/openmpi
       make -j12 distcheck
-    displayName: Compiling ABySS with gcc-4.8
+    displayName: Compiling ABySS with gcc-4_8
 
 - job: clang_format
   pool:
