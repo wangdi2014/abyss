@@ -136,7 +136,7 @@ jobs:
     displayName: Install gcc-4_8
   - script: |
       ./autogen.sh
-      export DISTCHECK_CONFIGURE_FLAGS="CC=gcc-8 CXX=g++-8"
+      export DISTCHECK_CONFIGURE_FLAGS="CC=gcc-4.8 CXX=g++-4.8"
       ./configure CC=gcc-4.8 CXX=g++-4.8 --with-mpi=/usr/lib/openmpi
       make -j12 distcheck
     displayName: Compiling ABySS with gcc-4_8
