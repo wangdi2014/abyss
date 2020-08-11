@@ -11,9 +11,11 @@ abyss_rresolver_short_LDADD = \
 	$(top_builddir)/Common/libcommon.a
 
 abyss_rresolver_short_SOURCES = \
-	RAlgorithmsShort.cpp \
-	BloomFilters.cpp \
-	Contigs.cpp \
-	SequenceTree.cpp \
-	RUtils.cpp \
+	RAlgorithmsShort.cpp RAlgorithmsShort.h \
+	BloomFilters.cpp BloomFilters.h \
+	Contigs.cpp Contigs.h \
+	SequenceTree.cpp SequenceTree.h \
+	RUtils.cpp RUtils.h \
 	RResolverShort.cpp
+
+EXTRA_DIST = btllib

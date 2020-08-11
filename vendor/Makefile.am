@@ -5,4 +5,5 @@ noinst_HEADERS = \
     btl_bloomfilter/vendor/cpptoml/include/cpptoml.h \
     btl_bloomfilter/vendor/IOUtil.h \
     nthash/nthash.hpp \
-    nthash/ntHashIterator.hpp
+    nthash/ntHashIterator.hpp \
+    nthash/stHashIterator.hpp
