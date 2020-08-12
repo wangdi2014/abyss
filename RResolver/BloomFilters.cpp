@@ -247,7 +247,7 @@ loadReads(const std::vector<std::string>& readFilepaths, int r)
 #pragma omp single
 	{
 		int counter = 0;
-		for (const auto path : readFilepaths) {
+		for (const auto& path : readFilepaths) {
 #pragma omp task firstprivate(path)
 			{
 				assert(!path.empty());
@@ -259,7 +259,7 @@ loadReads(const std::vector<std::string>& readFilepaths, int r)
 				btllib::SeqReader reader(path);
 				uint64_t readCount = 0, dropped = 0;
 #pragma omp parallel num_threads(threads_per_task)
-				for (btllib::SeqReader::Record record; record = reader.read();) {
+				for (btllib::SeqReader::Record record; (record = reader.read());) {
 					if (int(record.seq.size()) != ReadBatch::current.size) {
 						continue;
 					}

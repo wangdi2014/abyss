@@ -98,7 +98,7 @@ determineShortReadStats(const std::vector<std::string>& readFilenames)
 #pragma omp parallel
 #pragma omp single
 	{
-		for (const auto filename : readFilenames)
+		for (const auto& filename : readFilenames)
 #pragma omp task firstprivate(filename)
 		{
 			Histogram hist;
@@ -407,7 +407,7 @@ determinePathSupport(const ContigPath& path)
 	} else {
 		if (combinations >= PATH_COMBINATIONS_MULTITHREAD_THRESHOLD) {
 			bool end = false;
-			for (const auto head : heads) {
+			for (const auto& head : heads) {
 #pragma omp critical(maxSupport)
 				{
 					if (unknown) {
