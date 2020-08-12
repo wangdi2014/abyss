@@ -1,6 +1,6 @@
 #include "RAlgorithmsShort.h"
-#include "SequenceTree.h"
 #include "RUtils.h"
+#include "SequenceTree.h"
 
 #include "btllib/include/btllib/seq_reader.hpp"
 
