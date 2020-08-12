@@ -4,8 +4,6 @@
 #include "BloomFilters.h"
 #include "Common/Histogram.h"
 #include "Contigs.h"
-#include "RUtils.h"
-#include "SequenceTree.h"
 
 #include <cassert>
 #include <climits>

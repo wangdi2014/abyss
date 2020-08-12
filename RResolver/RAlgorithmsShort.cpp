@@ -1,8 +1,11 @@
 #include "RAlgorithmsShort.h"
-#include "vendor/nthash/ntHashIterator.hpp"
-#include "vendor/nthash/stHashIterator.hpp"
+#include "SequenceTree.h"
+#include "RUtils.h"
 
 #include "btllib/include/btllib/seq_reader.hpp"
+
+#include "vendor/nthash/ntHashIterator.hpp"
+#include "vendor/nthash/stHashIterator.hpp"
 
 #if _OPENMP
 #include <omp.h>
@@ -101,48 +104,55 @@ determineShortReadStats(const std::vector<std::string>& readFilenames)
 #pragma omp parallel
 #pragma omp single
 	{
-		for (const auto& filename : readFilenames)
+#if _OPENMP
+		for (const auto& f : readFilenames) {
+			const auto filename =
+			    f; // Clang complains that range based loop is copying without this
+#else
+		for (const auto& filename : readFilenames) {
+#endif
 #pragma omp task firstprivate(filename)
-		{
-			Histogram hist;
-			std::map<int, Histogram> qualThresholdPositionsHists;
-
-			btllib::SeqReader reader(filename);
-			for (btllib::SeqReader::Record record;
-			     (record = reader.read()) && (record.num < READ_STATS_SAMPLE_SIZE);) {
-				if (record.seq.size() > MAX_READ_SIZE) {
-					continue;
-				}
-				hist.insert(record.seq.size());
-				for (int j = record.qual.size() - 1; j >= 0; j--) {
-					if (record.qual[j] >= RMER_QUALITY_THRESHOLD) {
-						qualThresholdPositionsHists[record.seq.size()].insert(j);
-						break;
-					}
-				}
-			}
-
-#pragma omp critical(ReadBatches)
 			{
-				for (const auto& i : hist) {
-					ReadBatch* batch = nullptr;
-					bool found = false;
-					for (auto& b : ReadBatch::batches) {
-						if (b.size == i.first) {
-							found = true;
-							batch = &b;
+				Histogram hist;
+				std::map<int, Histogram> qualThresholdPositionsHists;
+
+				btllib::SeqReader reader(filename);
+				for (btllib::SeqReader::Record record;
+				     (record = reader.read()) && (record.num < READ_STATS_SAMPLE_SIZE);) {
+					if (record.seq.size() > MAX_READ_SIZE) {
+						continue;
+					}
+					hist.insert(record.seq.size());
+					for (int j = record.qual.size() - 1; j >= 0; j--) {
+						if (record.qual[j] >= RMER_QUALITY_THRESHOLD) {
+							qualThresholdPositionsHists[record.seq.size()].insert(j);
 							break;
 						}
 					}
-					if (!found) {
-						ReadBatch::batches.push_back(ReadBatch(i.first));
-						batch = &(ReadBatch::batches.back());
-					}
-					batch->sampleCount += i.second;
-					auto& qualHist = batch->qualThresholdPositions;
-					for (const auto& q : qualThresholdPositionsHists[i.first]) {
-						for (size_t n = 0; n < q.second; n++) {
-							qualHist.insert(q.first);
+				}
+
+#pragma omp critical(ReadBatches)
+				{
+					for (const auto& i : hist) {
+						ReadBatch* batch = nullptr;
+						bool found = false;
+						for (auto& b : ReadBatch::batches) {
+							if (b.size == i.first) {
+								found = true;
+								batch = &b;
+								break;
+							}
+						}
+						if (!found) {
+							ReadBatch::batches.push_back(ReadBatch(i.first));
+							batch = &(ReadBatch::batches.back());
+						}
+						batch->sampleCount += i.second;
+						auto& qualHist = batch->qualThresholdPositions;
+						for (const auto& q : qualThresholdPositionsHists[i.first]) {
+							for (size_t n = 0; n < q.second; n++) {
+								qualHist.insert(q.first);
+							}
 						}
 					}
 				}
