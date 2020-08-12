@@ -44,8 +44,8 @@ class VanillaBloomFilter : protected BloomFilter
 
 	void loadSequence(const Sequence& sequence);
 
-	bool contains(const size_t precomputed[]) const { return BloomFilter::contains(precomputed); }
-	bool contains(vector<size_t> const& precomputed) const
+	bool contains(const uint64_t precomputed[]) const { return BloomFilter::contains(precomputed); }
+	bool contains(vector<uint64_t> const& precomputed) const
 	{
 		return BloomFilter::contains(precomputed);
 	}
@@ -66,10 +66,10 @@ class SpacedSeedsBloomFilter : protected BloomFilter
 
 	void loadSequence(const Sequence& sequence);
 
-	SpacedSeeds getHitSeeds(const size_t precomputed[]) const
+	SpacedSeeds getHitSeeds(const uint64_t precomputed[]) const
 	{
 		SpacedSeeds hitSeeds;
-		size_t normHash;
+		uint64_t normHash;
 		unsigned seedHits;
 		for (unsigned i = 0; i < SPACED_SEEDS_COUNT; i++) {
 			seedHits = 0;

@@ -4,11 +4,14 @@
 
 #include "btllib/include/btllib/seq_reader.hpp"
 
+#if _OPENMP
+#include <omp.h>
+#endif
+
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <map>
-#include <omp.h>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -16,8 +19,8 @@
 
 static unsigned char BASES[] = { 'A', 'C', 'T', 'G' };
 
-typedef std::map<long, std::map<long, Support>> SupportMap;
-typedef std::map<long, SupportMap> RepeatSupportMap;
+typedef std::map<unsigned int, std::map<unsigned int, Support>> SupportMap;
+typedef std::map<unsigned int, SupportMap> RepeatSupportMap;
 
 long ReadBatch::readsSampleSize = 0;
 std::vector<ReadBatch> ReadBatch::batches;

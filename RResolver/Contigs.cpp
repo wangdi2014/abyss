@@ -18,9 +18,9 @@ distanceBetween(const ContigNode& node1, const ContigNode& node2)
 const ContigSequence&
 getContigSequence(const ContigNode& node)
 {
-	const long idx = node.index();
+	const auto idx = node.index();
 	assert(idx >= 0);
-	assert(idx < long(g_contigSequences.size()));
+	assert(idx < (decltype(idx))(g_contigSequences.size()));
 	return g_contigSequences[idx];
 }
 
@@ -33,9 +33,9 @@ getContigSize(const ContigNode& node)
 const std::string&
 getContigComment(const ContigNode& node)
 {
-	const long id = node.id();
+	const auto id = node.id();
 	assert(id >= 0);
-	assert(id < long(g_contigComments.size()));
+	assert(id < (decltype(id))(g_contigComments.size()));
 	return g_contigComments[id];
 }
 

@@ -238,16 +238,23 @@ loadReads(const std::vector<std::string>& readFilepaths, int r)
 	size_t kmersPerReadModeCount = 0;
 	Histogram kmersPerReadHist;
 
+#if _OPENMP
 	size_t threads_per_task = omp_get_max_threads() / PARALLEL_IO_SIZE;
 	if (threads_per_task < 1) {
 		threads_per_task = 1;
 	}
 	omp_set_nested(1);
+#endif
 #pragma omp parallel
 #pragma omp single
 	{
 		int counter = 0;
+#if _OPENMP
+		for (const auto& p : readFilepaths) {
+			const auto path = p; // Clang complains that range based loop is copying without this
+#else
 		for (const auto& path : readFilepaths) {
+#endif
 #pragma omp task firstprivate(path)
 			{
 				assert(!path.empty());

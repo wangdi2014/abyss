@@ -27,6 +27,8 @@ iteratorMultithreading(
 		threadsBefore = omp_get_max_threads();
 		omp_set_num_threads(threads);
 	}
+#else
+	(void)threads;
 #endif
 	IteratorT it = start;
 	while (it != end) {

@@ -188,11 +188,11 @@ getTreeSequences(
 		Sequence sequence;
 		sequence.reserve(trace.size() * EXPECTED_BASES_PER_NODE);
 		if (forward) {
-			for (auto it = trace.begin(); it != trace.end(); it++) {
+			for (Trace::const_iterator it = trace.begin(); it != trace.end(); it++) {
 				sequence += it->treeSequence();
 			}
 		} else {
-			for (auto it = trace.rbegin(); it != trace.rend(); it++) {
+			for (Trace::const_reverse_iterator it = trace.rbegin(); it != trace.rend(); it++) {
 				sequence += it->treeSequence();
 			}
 		}
