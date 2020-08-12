@@ -19,7 +19,9 @@ const ContigSequence&
 getContigSequence(const ContigNode& node)
 {
 	const auto idx = node.index();
-	assert(idx >= 0);
+	if (std::is_signed<decltype(idx)>::value) {
+		assert(idx >= 0);
+	}
 	assert(idx < (decltype(idx))(g_contigSequences.size()));
 	return g_contigSequences[idx];
 }
@@ -34,7 +36,9 @@ const std::string&
 getContigComment(const ContigNode& node)
 {
 	const auto id = node.id();
-	assert(id >= 0);
+	if (std::is_signed<decltype(id)>::value) {
+		assert(id >= 0);
+	}
 	assert(id < (decltype(id))(g_contigComments.size()));
 	return g_contigComments[id];
 }
