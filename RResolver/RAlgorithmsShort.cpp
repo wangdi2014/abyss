@@ -420,7 +420,12 @@ determinePathSupport(const ContigPath& path)
 	} else {
 		if (combinations >= PATH_COMBINATIONS_MULTITHREAD_THRESHOLD) {
 			bool end = false;
+#if _OPENMP
+			for (const auto& h : heads) {
+				const auto head = h;
+#else
 			for (const auto& head : heads) {
+#endif
 #pragma omp critical(maxSupport)
 				{
 					if (unknown) {

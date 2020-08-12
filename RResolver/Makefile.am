@@ -17,7 +17,8 @@ noinst_LIBRARIES = libralgorithmsshort.a
 
 libralgorithmsshort_a_CXXFLAGS = \
   $(AM_CXXFLAGS) $(OPENMP_CXXFLAGS) \
-	-I$(top_srcdir) -I$(top_srcdir)/Common -I$(top_srcdir)/DataLayer
+	-I$(top_srcdir) -I$(top_srcdir)/Common -I$(top_srcdir)/DataLayer \
+	-pthread
 
 libralgorithmsshort_a_SOURCES = \
 	RAlgorithmsShort.cpp RAlgorithmsShort.h \
