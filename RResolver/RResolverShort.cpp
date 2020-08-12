@@ -6,6 +6,10 @@
 
 #include "RAlgorithmsShort.h"
 
+#if _OPENMP
+#include <omp.h>
+#endif
+
 #include <fstream>
 #include <getopt.h>
 #include <iostream>
